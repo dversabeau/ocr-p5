@@ -2,7 +2,7 @@
   "name": "yoga-app",
   "version": "0.0.0",
   "scripts": {
-    "coverage": "jest --ycoverage",
+    "coverage": "jest --coverage",
     "start": "ng serve",
     "test": "jest",
     "test:watch": "jest --watch",
