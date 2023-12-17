@@ -15,6 +15,10 @@ module.exports = {
       statements: 80
     },
   },
+  collectCoverageFrom: [
+    "src/app/**/*.{js,jsx,ts,tsx}",
+    "!src/app/**/*module.ts",
+  ],
   roots: [
     "<rootDir>"
   ],
