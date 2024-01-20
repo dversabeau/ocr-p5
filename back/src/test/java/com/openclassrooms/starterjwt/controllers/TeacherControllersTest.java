@@ -30,6 +30,10 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureMockMvc
 @DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)
 @Import(TestConfigSecurity.class)
+@SqlGroup({
+        @Sql(value = "classpath:sql/teacher/empty/reset.sql", executionPhase = BEFORE_TEST_METHOD),
+        @Sql(value = "classpath:sql/teacher/init/teacher-data.sql", executionPhase = BEFORE_TEST_METHOD),
+})
 public class TeacherControllersTest {
 
     @Autowired
@@ -39,10 +43,6 @@ public class TeacherControllersTest {
     private ObjectMapper objectMapper;
 
     @Test
-    @SqlGroup({
-            @Sql(value = "classpath:sql/teacher/empty/reset.sql", executionPhase = BEFORE_TEST_METHOD),
-            @Sql(value = "classpath:sql/teacher/init/teacher-data.sql", executionPhase = BEFORE_TEST_METHOD),
-    })
     void should_retrieve_one_teacher() throws Exception {
 
         String token = generateTestToken("alicia.marty@gmail.com", "test!1234");
@@ -60,10 +60,6 @@ public class TeacherControllersTest {
     }
 
     @Test
-    @SqlGroup({
-            @Sql(value = "classpath:sql/teacher/empty/reset.sql", executionPhase = BEFORE_TEST_METHOD),
-            @Sql(value = "classpath:sql/teacher/init/teacher-data.sql", executionPhase = BEFORE_TEST_METHOD),
-    })
     void should_retrieve_all_teachers() throws Exception {
 
         String token = generateTestToken("alicia.marty@gmail.com", "test!1234");

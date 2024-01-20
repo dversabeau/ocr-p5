@@ -32,6 +32,12 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureMockMvc
 @DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)
 @Import(TestConfigSecurity.class)
+@SqlGroup({
+        @Sql(value = "classpath:sql/session/empty/reset.sql", executionPhase = BEFORE_TEST_METHOD),
+        @Sql(value = "classpath:sql/teacher/empty/reset.sql", executionPhase = BEFORE_TEST_METHOD),
+        @Sql(value = "classpath:sql/teacher/init/teacher-data.sql", executionPhase = BEFORE_TEST_METHOD),
+        @Sql(value = "classpath:sql/session/init/session-data.sql", executionPhase = BEFORE_TEST_METHOD)
+})
 public class SessionControllersTest {
 
     @Autowired
@@ -41,12 +47,6 @@ public class SessionControllersTest {
     private ObjectMapper objectMapper;
 
     @Test
-    @SqlGroup({
-            @Sql(value = "classpath:sql/session/empty/reset.sql", executionPhase = BEFORE_TEST_METHOD),
-            @Sql(value = "classpath:sql/teacher/empty/reset.sql", executionPhase = BEFORE_TEST_METHOD),
-            @Sql(value = "classpath:sql/teacher/init/teacher-data.sql", executionPhase = BEFORE_TEST_METHOD),
-            @Sql(value = "classpath:sql/session/init/session-data.sql", executionPhase = BEFORE_TEST_METHOD)
-    })
     void should_retrieve_one_session() throws Exception {
 
         String token = generateTestToken("alicia.marty@gmail.com", "test!1234");
@@ -70,12 +70,6 @@ public class SessionControllersTest {
     }
 
     @Test
-    @SqlGroup({
-            @Sql(value = "classpath:sql/session/empty/reset.sql", executionPhase = BEFORE_TEST_METHOD),
-            @Sql(value = "classpath:sql/teacher/empty/reset.sql", executionPhase = BEFORE_TEST_METHOD),
-            @Sql(value = "classpath:sql/teacher/init/teacher-data.sql", executionPhase = BEFORE_TEST_METHOD),
-            @Sql(value = "classpath:sql/session/init/session-data.sql", executionPhase = BEFORE_TEST_METHOD)
-    })
     void should_retrieve_all_sessions() throws Exception {
 
         String token = generateTestToken("alicia.marty@gmail.com", "test!1234");
@@ -88,12 +82,6 @@ public class SessionControllersTest {
     }
 
     @Test
-    @SqlGroup({
-            @Sql(value = "classpath:sql/session/empty/reset.sql", executionPhase = BEFORE_TEST_METHOD),
-            @Sql(value = "classpath:sql/teacher/empty/reset.sql", executionPhase = BEFORE_TEST_METHOD),
-            @Sql(value = "classpath:sql/teacher/init/teacher-data.sql", executionPhase = BEFORE_TEST_METHOD),
-            @Sql(value = "classpath:sql/session/init/session-data.sql", executionPhase = BEFORE_TEST_METHOD)
-    })
     void should_create_a_session() throws Exception {
         final File jsonFile = new ClassPathResource("sql/session/init/session_create.json").getFile();
         final String sessionToCreate = Files.readString(jsonFile.toPath());
@@ -115,12 +103,6 @@ public class SessionControllersTest {
     }
 
     @Test
-    @SqlGroup({
-            @Sql(value = "classpath:sql/session/empty/reset.sql", executionPhase = BEFORE_TEST_METHOD),
-            @Sql(value = "classpath:sql/teacher/empty/reset.sql", executionPhase = BEFORE_TEST_METHOD),
-            @Sql(value = "classpath:sql/teacher/init/teacher-data.sql", executionPhase = BEFORE_TEST_METHOD),
-            @Sql(value = "classpath:sql/session/init/session-data.sql", executionPhase = BEFORE_TEST_METHOD)
-    })
     void should_update_a_session() throws Exception {
         final File jsonFile = new ClassPathResource("sql/session/init/session_update.json").getFile();
         final String sessionToUpdate= Files.readString(jsonFile.toPath());
@@ -142,12 +124,6 @@ public class SessionControllersTest {
     }
 
     @Test
-    @SqlGroup({
-            @Sql(value = "classpath:sql/session/empty/reset.sql", executionPhase = BEFORE_TEST_METHOD),
-            @Sql(value = "classpath:sql/teacher/empty/reset.sql", executionPhase = BEFORE_TEST_METHOD),
-            @Sql(value = "classpath:sql/teacher/init/teacher-data.sql", executionPhase = BEFORE_TEST_METHOD),
-            @Sql(value = "classpath:sql/session/init/session-data.sql", executionPhase = BEFORE_TEST_METHOD)
-    })
     void should_delete_a_session() throws Exception {
 
         String token = generateTestToken("alicia.marty@gmail.com", "test!1234");
@@ -159,12 +135,6 @@ public class SessionControllersTest {
     }
 
     @Test
-    @SqlGroup({
-            @Sql(value = "classpath:sql/session/empty/reset.sql", executionPhase = BEFORE_TEST_METHOD),
-            @Sql(value = "classpath:sql/teacher/empty/reset.sql", executionPhase = BEFORE_TEST_METHOD),
-            @Sql(value = "classpath:sql/teacher/init/teacher-data.sql", executionPhase = BEFORE_TEST_METHOD),
-            @Sql(value = "classpath:sql/session/init/session-data.sql", executionPhase = BEFORE_TEST_METHOD)
-    })
     void should_participate() throws Exception {
 
         String token = generateTestToken("alicia.marty@gmail.com", "test!1234");
@@ -176,12 +146,6 @@ public class SessionControllersTest {
     }
 
     @Test
-    @SqlGroup({
-            @Sql(value = "classpath:sql/session/empty/reset.sql", executionPhase = BEFORE_TEST_METHOD),
-            @Sql(value = "classpath:sql/teacher/empty/reset.sql", executionPhase = BEFORE_TEST_METHOD),
-            @Sql(value = "classpath:sql/teacher/init/teacher-data.sql", executionPhase = BEFORE_TEST_METHOD),
-            @Sql(value = "classpath:sql/session/init/session-data.sql", executionPhase = BEFORE_TEST_METHOD)
-    })
     void should_not_participate_anymore() throws Exception {
 
         String token = generateTestToken("alicia.marty@gmail.com", "test!1234");

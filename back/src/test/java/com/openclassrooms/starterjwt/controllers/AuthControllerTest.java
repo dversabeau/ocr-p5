@@ -33,6 +33,10 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureMockMvc
 @DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)
 @Import(TestConfigSecurity.class)
+@SqlGroup({
+        @Sql(value = "classpath:sql/user/empty/reset.sql", executionPhase = BEFORE_TEST_METHOD),
+        @Sql(value = "classpath:sql/user/init/user-data.sql", executionPhase = BEFORE_TEST_METHOD)
+})
 public class AuthControllerTest {
 
     @Autowired
@@ -40,12 +44,7 @@ public class AuthControllerTest {
 
     @Autowired
     private ObjectMapper objectMapper;
-
     @Test
-    @SqlGroup({
-            @Sql(value = "classpath:sql/user/empty/reset.sql", executionPhase = BEFORE_TEST_METHOD),
-            @Sql(value = "classpath:sql/user/init/user-data.sql", executionPhase = BEFORE_TEST_METHOD)
-    })
     void should_create_one_user() throws Exception {
         final File jsonFile = new ClassPathResource("sql/user/init/user.json").getFile();
         final String userToCreate = Files.readString(jsonFile.toPath());
@@ -55,12 +54,7 @@ public class AuthControllerTest {
                 .content(userToCreate))
                 .andExpect(status().isOk());
     }
-
     @Test
-    @SqlGroup({
-            @Sql(value = "classpath:sql/user/empty/reset.sql", executionPhase = BEFORE_TEST_METHOD),
-            @Sql(value = "classpath:sql/user/init/user-data.sql", executionPhase = BEFORE_TEST_METHOD)
-    })
     void should_not_create_user_because_email_already_exist() throws Exception {
         final File jsonFile = new ClassPathResource("sql/user/init/user_already_exist.json").getFile();
         final String userToCreate = Files.readString(jsonFile.toPath());
@@ -70,20 +64,13 @@ public class AuthControllerTest {
                         .content(userToCreate))
                 .andExpect(status().isBadRequest());
     }
-
     @Test
-    @SqlGroup({
-            @Sql(value = "classpath:sql/user/empty/reset.sql", executionPhase = BEFORE_TEST_METHOD),
-            @Sql(value = "classpath:sql/user/init/user-data.sql", executionPhase = BEFORE_TEST_METHOD)
-    })
     void should_login_with_correct_credentials() throws Exception {
 
         String email = "alicia.marty@gmail.com";
         String password = "test!1234";
         String firstName = "Roger";
         String lastName = "Clara";
-        String encodedPassword = new BCryptPasswordEncoder().encode(password);
-        System.out.println(encodedPassword);
 
         LoginRequest loginRequest = new LoginRequest();
         loginRequest.setEmail(email);
@@ -103,6 +90,4 @@ public class AuthControllerTest {
                 .andExpect(jsonPath("$.lastName").value(lastName))
                 .andExpect(jsonPath("$.admin").isBoolean());
     }
-
-
 }

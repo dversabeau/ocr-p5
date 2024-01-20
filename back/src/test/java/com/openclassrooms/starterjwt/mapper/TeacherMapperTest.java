@@ -19,7 +19,6 @@ public class TeacherMapperTest {
 
     @Test
     void toEntityTest(){
-
         Teacher teacher = teacherMapper.toEntity(teacherDto);
 
         assertThat(teacher.getId()).isEqualTo(1L);

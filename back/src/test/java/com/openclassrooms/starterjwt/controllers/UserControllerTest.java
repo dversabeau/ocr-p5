@@ -25,6 +25,10 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureMockMvc
 @DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)
 @Import(TestConfigSecurity.class)
+@SqlGroup({
+        @Sql(value = "classpath:sql/user/empty/reset.sql", executionPhase = BEFORE_TEST_METHOD),
+        @Sql(value = "classpath:sql/user/init/user-data.sql", executionPhase = BEFORE_TEST_METHOD)
+})
 public class UserControllerTest {
 
     @Autowired
@@ -34,10 +38,6 @@ public class UserControllerTest {
     private ObjectMapper objectMapper;
 
     @Test
-    @SqlGroup({
-            @Sql(value = "classpath:sql/user/empty/reset.sql", executionPhase = BEFORE_TEST_METHOD),
-            @Sql(value = "classpath:sql/user/init/user-data.sql", executionPhase = BEFORE_TEST_METHOD)
-    })
     void should_retrieve_one_user() throws Exception {
 
         String token = generateTestToken("alicia.marty@gmail.com", "test!1234");
@@ -57,10 +57,6 @@ public class UserControllerTest {
                 .andExpect(jsonPath("$.admin").isBoolean());
     }
     @Test
-    @SqlGroup({
-            @Sql(value = "classpath:sql/user/empty/reset.sql", executionPhase = BEFORE_TEST_METHOD),
-            @Sql(value = "classpath:sql/user/init/user-data.sql", executionPhase = BEFORE_TEST_METHOD)
-    })
     void should_not_retrieve_one_user() throws Exception {
         String token = generateTestToken("alicia.marty@gmail.com", "test!1234");
 
@@ -70,10 +66,6 @@ public class UserControllerTest {
     }
 
     @Test
-    @SqlGroup({
-            @Sql(value = "classpath:sql/user/empty/reset.sql", executionPhase = BEFORE_TEST_METHOD),
-            @Sql(value = "classpath:sql/user/init/user-data.sql", executionPhase = BEFORE_TEST_METHOD)
-    })
     void should_not_delete_one_user() throws Exception {
         String token = generateTestToken("alicia.marty@gmail.com", "test!1234");
 
@@ -82,10 +74,7 @@ public class UserControllerTest {
                 .andExpect(status().isNotFound());
     }
 
-    @SqlGroup({
-            @Sql(value = "classpath:sql/user/empty/reset.sql", executionPhase = BEFORE_TEST_METHOD),
-            @Sql(value = "classpath:sql/user/init/user-data.sql", executionPhase = BEFORE_TEST_METHOD)
-    })
+    @Test
     void should_not_authorized_to_delete_another_user() throws Exception {
         String token = generateTestToken("alicia.marty@gmail.com", "test!1234");
 
@@ -95,10 +84,6 @@ public class UserControllerTest {
     }
 
     @Test
-    @SqlGroup({
-            @Sql(value = "classpath:sql/user/empty/reset.sql", executionPhase = BEFORE_TEST_METHOD),
-            @Sql(value = "classpath:sql/user/init/user-data.sql", executionPhase = BEFORE_TEST_METHOD)
-    })
     void should_delete_one_user() throws Exception {
         String token = generateTestToken("laura.royer@yahoo.fr", "test!1234");
 
